@@ -8,6 +8,7 @@ import TopProductsChart from "./charts/TopProductsChart";
 import CustomerDistributionChart from "./charts/CustomerDistributionChart";
 import { DollarSign, ShoppingCart, Package, TrendingUp, RefreshCw } from "lucide-react";
 import { Button } from "./ui/button";
+import { ThemeToggle } from "./ThemeToggle";
 interface DashboardProps {
   data: ProcessedData;
   onReset: () => void;
@@ -30,10 +31,13 @@ const Dashboard = ({
 Informações de desempenho em tempo real a partir dos seus dados de vendas.
           </p>
         </div>
-        <Button onClick={onReset} variant="outline" className="flex items-center gap-2">
-          <RefreshCw className="w-4 h-4" />
-          Upload Novos Dados
-        </Button>
+        <div className="flex items-center gap-2">
+          <ThemeToggle />
+          <Button onClick={onReset} variant="outline" className="flex items-center gap-2">
+            <RefreshCw className="w-4 h-4" />
+            Upload Novos Dados
+          </Button>
+        </div>
       </div>
 
       {/* Stats Grid */}
