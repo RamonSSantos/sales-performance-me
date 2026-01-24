@@ -1,7 +1,8 @@
 import { useCallback, useState } from "react";
-import { Upload, FileJson, CheckCircle2, AlertCircle } from "lucide-react";
+import { Upload, FileSpreadsheet, CheckCircle2, AlertCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { SalesRecord } from "@/types/sales";
+import * as XLSX from "xlsx";
 
 interface FileUploadProps {
   onDataLoaded: (data: SalesRecord[]) => void;
@@ -20,9 +21,11 @@ const FileUpload = ({ onDataLoaded }: FileUploadProps) => {
 
       reader.onload = (e) => {
         try {
-          const content = e.target?.result as string;
-          const data = JSON.parse(content);
-          const records: SalesRecord[] = Array.isArray(data) ? data : [data];
+          const data = e.target?.result;
+          const workbook = XLSX.read(data, { type: "array" });
+          const sheetName = workbook.SheetNames[0];
+          const worksheet = workbook.Sheets[sheetName];
+          const records: SalesRecord[] = XLSX.utils.sheet_to_json(worksheet);
           
           if (records.length > 0 && records[0].ID_Pedido) {
             onDataLoaded(records);
@@ -32,30 +35,38 @@ const FileUpload = ({ onDataLoaded }: FileUploadProps) => {
           }
         } catch (err) {
           setStatus("error");
-          setErrorMessage("Invalid JSON format. Please check your file.");
+          setErrorMessage("Formato de arquivo inválido. Verifique seu arquivo Excel.");
         }
       };
 
       reader.onerror = () => {
         setStatus("error");
-        setErrorMessage("Error reading file.");
+        setErrorMessage("Erro ao ler o arquivo.");
       };
 
-      reader.readAsText(file);
+      reader.readAsArrayBuffer(file);
     },
     [onDataLoaded]
   );
+
+  const isExcelFile = (file: File) => {
+    const validTypes = [
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      "application/vnd.ms-excel"
+    ];
+    return validTypes.includes(file.type) || file.name.endsWith(".xlsx") || file.name.endsWith(".xls");
+  };
 
   const handleDrop = useCallback(
     (e: React.DragEvent<HTMLDivElement>) => {
       e.preventDefault();
       setIsDragging(false);
       const file = e.dataTransfer.files[0];
-      if (file && file.type === "application/json") {
+      if (file && isExcelFile(file)) {
         processFile(file);
       } else {
         setStatus("error");
-        setErrorMessage("Please upload a JSON file.");
+        setErrorMessage("Por favor, envie um arquivo Excel (.xlsx).");
       }
     },
     [processFile]
@@ -91,7 +102,7 @@ const FileUpload = ({ onDataLoaded }: FileUploadProps) => {
       >
         <input
           type="file"
-          accept=".json"
+          accept=".xlsx,.xls"
           onChange={handleFileSelect}
           className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
         />
@@ -107,12 +118,12 @@ const FileUpload = ({ onDataLoaded }: FileUploadProps) => {
                   Upload Dados de Vendas
                 </h3>
                 <p className="text-muted-foreground">
-                  Drag and drop your JSON file here, or click to browse
+                  Arraste e solte seu arquivo Excel aqui, ou clique para buscar
                 </p>
               </div>
               <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                <FileJson className="w-4 h-4" />
-                <span>Supports JSON format</span>
+                <FileSpreadsheet className="w-4 h-4" />
+                <span>Suporta formato Excel (.xlsx)</span>
               </div>
             </>
           )}
