@@ -29,7 +29,7 @@ const Dashboard = ({
         </div>
         <Button onClick={onReset} variant="outline" className="flex items-center gap-2">
           <RefreshCw className="w-4 h-4" />
-          Upload New Data
+          Upload Novos Dados
         </Button>
       </div>
 
