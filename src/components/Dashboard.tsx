@@ -24,7 +24,10 @@ const Dashboard = ({
             Vendas <span className="text-gradient">Dashboard</span>
           </h1>
           <p className="text-muted-foreground mt-1">
-            Real-time performance insights from your sales data
+            
+
+
+Informações de desempenho em tempo real a partir dos seus dados de vendas.
           </p>
         </div>
         <Button onClick={onReset} variant="outline" className="flex items-center gap-2">
