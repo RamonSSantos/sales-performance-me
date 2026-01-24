@@ -1,13 +1,13 @@
 export interface SalesRecord {
-  ID_Pedido: string;
-  Data_Pedido: string;
+  ID_Pedido: string | number;
+  Data_Pedido: string | number;
   ID_Representante: number;
   Nome_Representante: string;
-  ID_Produto: string;
+  ID_Produto: string | number;
   Nome_Produto: string;
-  Valor_Produto_R$: string;
+  Valor_Produto_R$: string | number;
   Quantidade_Vendida: number;
-  Valor_Total_Venda_R$: string;
+  Valor_Total_Venda_R$: string | number;
   Nome_Cliente: string;
   Localidade_Cliente: string;
   Estado: string;
