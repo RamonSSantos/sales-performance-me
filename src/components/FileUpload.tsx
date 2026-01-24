@@ -104,7 +104,7 @@ const FileUpload = ({ onDataLoaded }: FileUploadProps) => {
               </div>
               <div>
                 <h3 className="text-xl font-semibold text-foreground mb-2">
-                  Upload Sales Data
+                  Upload Dados de Vendas
                 </h3>
                 <p className="text-muted-foreground">
                   Drag and drop your JSON file here, or click to browse
