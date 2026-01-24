@@ -38,7 +38,7 @@ const Dashboard = ({
         <StatCard title="Total Receita" value={formatCurrency(data.totalSales)} icon={DollarSign} delay={0} />
         <StatCard title="Total de Pedidos" value={formatNumber(data.totalOrders)} icon={ShoppingCart} delay={50} />
         <StatCard title="Produtos Vendidos" value={formatNumber(data.totalProducts)} icon={Package} delay={100} />
-        <StatCard title="Avg. Order Value" value={formatCurrency(data.avgOrderValue)} icon={TrendingUp} delay={150} />
+        <StatCard title="Valor Médio por Pedido" value={formatCurrency(data.avgOrderValue)} icon={TrendingUp} delay={150} />
       </div>
 
       {/* Charts Grid */}
