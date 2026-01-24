@@ -1,17 +1,33 @@
 import { SalesRecord, ProcessedData } from "@/types/sales";
 
-const parseValue = (value: string): number => {
-  if (!value) return 0;
-  return parseFloat(value.replace(/\./g, "").replace(",", ".")) || 0;
+const parseValue = (value: string | number): number => {
+  if (value === null || value === undefined) return 0;
+  if (typeof value === 'number') return value;
+  if (typeof value === 'string') {
+    return parseFloat(value.replace(/\./g, "").replace(",", ".")) || 0;
+  }
+  return 0;
 };
 
-const parseDate = (dateStr: string): Date => {
-  const parts = dateStr.split("/");
-  if (parts.length === 3) {
-    const [day, month, year] = parts;
-    return new Date(parseInt(year), parseInt(month) - 1, parseInt(day));
+const parseDate = (dateValue: string | number): Date => {
+  // Se for número (serial do Excel), converter
+  if (typeof dateValue === 'number') {
+    // Excel usa 1/1/1900 como base (com bug do ano bissexto)
+    const excelEpoch = new Date(1899, 11, 30);
+    return new Date(excelEpoch.getTime() + dateValue * 86400000);
   }
-  return new Date(dateStr);
+  
+  // Se for string no formato DD/MM/YYYY
+  if (typeof dateValue === 'string') {
+    const parts = dateValue.split("/");
+    if (parts.length === 3) {
+      const [day, month, year] = parts;
+      return new Date(parseInt(year), parseInt(month) - 1, parseInt(day));
+    }
+    return new Date(dateValue);
+  }
+  
+  return new Date();
 };
 
 const formatMonth = (date: Date): string => {
