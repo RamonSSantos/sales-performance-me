@@ -4,25 +4,19 @@ import { processData } from "@/utils/dataProcessor";
 import FileUpload from "@/components/FileUpload";
 import Dashboard from "@/components/Dashboard";
 import { BarChart3 } from "lucide-react";
-
 const Index = () => {
   const [dashboardData, setDashboardData] = useState<ProcessedData | null>(null);
-
   const handleDataLoaded = (records: SalesRecord[]) => {
     const processed = processData(records);
     setDashboardData(processed);
   };
-
   const handleReset = () => {
     setDashboardData(null);
   };
-
   if (dashboardData) {
     return <Dashboard data={dashboardData} onReset={handleReset} />;
   }
-
-  return (
-    <div className="min-h-screen bg-background flex flex-col items-center justify-center p-6">
+  return <div className="min-h-screen bg-background flex flex-col items-center justify-center p-6">
       {/* Glow effect */}
       <div className="fixed inset-0 pointer-events-none">
         <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[600px] rounded-full bg-primary/5 blur-3xl" />
@@ -38,7 +32,7 @@ const Index = () => {
             Sales <span className="text-gradient">Performance</span>
           </h1>
           <p className="text-lg text-muted-foreground max-w-md mx-auto">
-            Upload your sales data to generate beautiful, interactive visualizations instantly.
+            Faça o upload dos seus dados de vendas para gerar visualizações interativas e atraentes instantaneamente.
           </p>
         </div>
 
@@ -50,8 +44,6 @@ const Index = () => {
           Supports JSON files with your sales records structure
         </p>
       </div>
-    </div>
-  );
+    </div>;
 };
-
 export default Index;
