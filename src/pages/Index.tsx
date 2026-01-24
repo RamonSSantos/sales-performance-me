@@ -41,7 +41,7 @@ const Index = () => {
 
         {/* Footer hint */}
         <p className="text-sm text-muted-foreground animate-fade-in">
-          Supports JSON files with your sales records structure
+          Suporta arquivos Excel (.xlsx) com a estrutura de registros de vendas
         </p>
       </div>
     </div>;
