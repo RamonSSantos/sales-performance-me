@@ -27,15 +27,28 @@ const FileUpload = ({ onDataLoaded }: FileUploadProps) => {
           const worksheet = workbook.Sheets[sheetName];
           const records: SalesRecord[] = XLSX.utils.sheet_to_json(worksheet);
           
-          if (records.length > 0 && records[0].ID_Pedido) {
-            onDataLoaded(records);
-            setStatus("success");
-          } else {
-            throw new Error("Invalid data format");
+          console.log("Registros parseados:", records);
+          console.log("Primeira linha:", records[0]);
+          
+          if (records.length === 0) {
+            throw new Error("O arquivo está vazio ou não contém dados válidos.");
           }
+          
+          const requiredColumns = ['ID_Pedido', 'Data_Pedido', 'Nome_Representante', 'Nome_Produto', 'Valor_Total_Venda_R$'];
+          const firstRecord = records[0] as unknown as Record<string, unknown>;
+          const missingColumns = requiredColumns.filter(col => !(col in firstRecord));
+          
+          if (missingColumns.length > 0) {
+            console.log("Colunas encontradas:", Object.keys(firstRecord));
+            throw new Error(`Colunas obrigatórias não encontradas: ${missingColumns.join(', ')}`);
+          }
+          
+          onDataLoaded(records);
+          setStatus("success");
         } catch (err) {
           setStatus("error");
-          setErrorMessage("Formato de arquivo inválido. Verifique seu arquivo Excel.");
+          const errorMsg = err instanceof Error ? err.message : "Formato de arquivo inválido. Verifique seu arquivo Excel.";
+          setErrorMessage(errorMsg);
         }
       };
 
@@ -135,7 +148,7 @@ const FileUpload = ({ onDataLoaded }: FileUploadProps) => {
               </div>
               <div>
                 <h3 className="text-xl font-semibold text-foreground mb-2">
-                  File Loaded Successfully!
+                  Arquivo Carregado com Sucesso!
                 </h3>
                 <p className="text-muted-foreground">{fileName}</p>
               </div>
@@ -149,7 +162,7 @@ const FileUpload = ({ onDataLoaded }: FileUploadProps) => {
               </div>
               <div>
                 <h3 className="text-xl font-semibold text-foreground mb-2">
-                  Upload Failed
+                  Falha no Upload
                 </h3>
                 <p className="text-muted-foreground">{errorMessage}</p>
               </div>
