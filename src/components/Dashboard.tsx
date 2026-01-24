@@ -35,7 +35,7 @@ const Dashboard = ({
 
       {/* Stats Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-        <StatCard title="Total Revenue" value={formatCurrency(data.totalSales)} icon={DollarSign} delay={0} />
+        <StatCard title="Total Receita" value={formatCurrency(data.totalSales)} icon={DollarSign} delay={0} />
         <StatCard title="Total Orders" value={formatNumber(data.totalOrders)} icon={ShoppingCart} delay={50} />
         <StatCard title="Products Sold" value={formatNumber(data.totalProducts)} icon={Package} delay={100} />
         <StatCard title="Avg. Order Value" value={formatCurrency(data.avgOrderValue)} icon={TrendingUp} delay={150} />
